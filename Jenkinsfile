@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment {
+        DOCKER_HUB_CREDENTIALS = 'dockerhub-credentials'
+    }
     stages {
         stage('Build Docker Image') {
             steps {
@@ -11,9 +14,11 @@ pipeline {
         stage('Push Docker Image') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'dockerhub-credentials') {
-                        dockerImage.push('v2')
-                    }
+                    sh """
+                    echo \$DOCKER_HUB_CREDENTIALS_PSW | docker login -u \$DOCKER_HUB_CREDENTIALS_USR --password-stdin https://index.docker.io/v1/
+                    dockerImage.push('v2')
+                    docker logout https://index.docker.io/v1/
+                    """
                 }
             }
         }
