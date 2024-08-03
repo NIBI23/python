@@ -15,9 +15,9 @@ pipeline {
             steps {
                 script {
                     sh """
-                    echo \$DOCKER_HUB_CREDENTIALS_PSW | docker login -u \$DOCKER_HUB_CREDENTIALS_USR --password-stdin https://index.docker.io/v1/
+                    echo \$DOCKER_HUB_CREDENTIALS_PSW | docker login -u \$DOCKER_HUB_CREDENTIALS_USR --password-stdin https://hub.docker.com/
                     dockerImage.push('v2')
-                    docker logout https://index.docker.io/v1/
+                    docker logout https://hub.docker.com/
                     """
                 }
             }
